@@ -1,0 +1,88 @@
+name: tarea3
+services:  
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    volumes:
+      - db_data:/var/lib/postgresql
+    healthcheck:
+      #test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d usuarios_db" ]
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d usuarios_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "512M"
+        # Los reservation solo aplican para swarm, pero so validos aca
+        reservations:
+          cpus: "2"
+          memory: "256M"
+    networks:
+      - intranet1
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - backend/.env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - intranet1
+      - intranet2
+    healthcheck:
+      test: [ "CMD","node","-e","require('http').get('http://127.0.0.1:3000/',
+              (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error',
+              () => process.exit(1));"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: "6"
+          memory: "512M"
+        # Los reservation solo aplican para swarm, pero so validos aca
+        reservations:
+          cpus: "2"
+          memory: "256M"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      backend:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "512M"
+        # Los reservation solo aplican para swarm, pero so validos aca
+        reservations:
+          cpus: "2"
+          memory: "256M"
+    ports:
+      - "8080:80"
+    networks:
+      - intranet2
+      - public
+
+networks:
+  intranet1:
+    driver: bridge
+  intranet2:
+    driver: bridge
+  public:
+    driver: bridge
+
+volumes:
+  db_data:
