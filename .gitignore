@@ -1,6 +1,7 @@
-# compiled output
 /src
 /test
+Readme.md
+# compiled output
 /dist
 /node_modules
 /build
