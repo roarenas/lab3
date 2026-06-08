@@ -1,5 +1,5 @@
 pipeline {
-    agent docker-container
+    agent container
     stages{
         stage("Primer paso pipeline") {
             steps{
