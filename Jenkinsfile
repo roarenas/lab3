@@ -10,6 +10,8 @@ pipeline {
         }
         stage("Segundo paso paso pipeline") {
             steps{
+                sh 'pwd'
+                sh 'export'
                 sh 'node --version'
             }
         }
