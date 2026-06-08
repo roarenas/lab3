@@ -10,7 +10,7 @@ pipeline {
         }
         stage("Segundo paso paso pipeline") {
             agent {
-                label 'Gogo'
+                label 'container'
             }
             steps{
                 sh 'node --version'
