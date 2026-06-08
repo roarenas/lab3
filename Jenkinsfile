@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'gogo'
+        label 'Gogo'
     }
     stages{
         stage("Primer paso pipeline") {
