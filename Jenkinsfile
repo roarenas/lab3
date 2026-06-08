@@ -29,7 +29,7 @@ pipeline {
                 }
             }
             steps{
-                sh 'docker ps'
+                sh 'node --version'
             }
         }
     }
