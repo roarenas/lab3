@@ -1,6 +1,7 @@
 /src
 /test
 Readme.md
+/debian-node
 # compiled output
 /dist
 /node_modules
