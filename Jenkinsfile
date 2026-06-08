@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'container'
+        label 'gogo'
     }
     stages{
         stage("Primer paso pipeline") {
@@ -9,8 +9,16 @@ pipeline {
             }
         }
         stage("Segundo paso paso pipeline") {
+            agent {
+                label 'debian'
+            }
             steps{
                 sh 'node --version'
+            }
+        }
+        stage("Tercer paso paso pipeline") {
+            steps{
+                sh 'docker ps'
             }
         }
     }
