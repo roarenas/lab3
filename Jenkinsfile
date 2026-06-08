@@ -23,7 +23,7 @@ pipeline {
         }
         stage("Cuarto paso paso pipeline") {
             agent {
-                docker{
+                docker {
                     imagen 'node:22'
                     label 'Gogo'
                 }
